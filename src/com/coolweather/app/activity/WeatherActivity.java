@@ -11,13 +11,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 public class WeatherActivity extends Activity implements OnClickListener {
 	private LinearLayout weatherInfoLayout;
@@ -70,6 +70,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		switchCity = (Button) findViewById(R.id.switch_city);
 		refreshWeather = (Button) findViewById(R.id.refresh_weather);
 		String countyCode = getIntent().getStringExtra("county_code");
+		Log.d("WeatherActivity", "onCreate");
 		if (!TextUtils.isEmpty(countyCode)) {
 			// 有县级代号时就去查询天⽓
 			publishText.setText("同步中...");
@@ -89,6 +90,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.switch_city:
 			Intent intent = new Intent(this, ChooseAreaActivity.class);
+			Log.d("WeatherActivity", "onClick");
 			intent.putExtra("from_weather_activity", true);
 			startActivity(intent);
 			finish();
@@ -180,5 +182,14 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		currentDateText.setText(prefs.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+	}
+
+	public void onBackPressed() {
+
+		Intent intent = new Intent(this, ChooseAreaActivity.class);
+		startActivity(intent);
+		intent.putExtra("FromtheWeatherActivity", "right");
+		finish();
+
 	}
 }
